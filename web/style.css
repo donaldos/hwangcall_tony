@@ -1,0 +1,243 @@
+:root {
+  --bg: #f4f3ef;
+  --surface: #ffffff;
+  --surface-2: #ebe9e3;
+  --text: #16161a;
+  --muted: #85858e;
+  --border: #dedbd4;
+  --accent: #4b3fb5;
+  --accent-soft: #e6e3fb;
+  --danger: #c0392b;
+  --ok: #2e9e5b;
+  --warn: #c98100;
+  --chat-bg: #b9cfe0;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #131316;
+    --surface: #1c1c21;
+    --surface-2: #2a2a31;
+    --text: #f0eff4;
+    --muted: #80808b;
+    --border: #2f2f37;
+    --accent: #8b80f0;
+    --accent-soft: #312c5c;
+    --danger: #e0645a;
+    --ok: #4cc47e;
+    --warn: #e8a634;
+    --chat-bg: #1a222b;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  font-size: 17px;
+}
+
+button, input, select { font: inherit; color: inherit; }
+
+button {
+  padding: 9px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+button:disabled { opacity: 0.35; cursor: not-allowed; }
+
+/* 전체 레이아웃: 15 / 70 / 15 — 위(상담자 정보)와 아래(오디오 컨트롤)를 같은 높이로 */
+.app {
+  height: 100dvh;
+  display: grid;
+  grid-template-rows: minmax(min-content, 15fr) minmax(0, 70fr) minmax(min-content, 15fr);
+}
+
+/* 1. 상담자 정보 */
+.profile {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.profile-form { display: flex; align-items: flex-end; gap: 16px; width: 100%; }
+.profile-fields {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1.1fr 0.8fr 0.7fr 2fr 3fr;
+  gap: 10px;
+  min-width: 0;
+}
+.field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.field span { font-size: 13px; color: var(--muted); font-weight: 600; }
+.field input, .field select {
+  width: 100%;
+  padding: 9px 11px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--bg);
+  font-size: 17px;
+}
+.field input:focus, .field select:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+.profile-actions { display: flex; align-items: center; gap: 8px; }
+.profile-state { font-size: 13px; color: var(--muted); min-width: 92px; text-align: right; }
+.profile-state.applied { color: var(--ok); }
+.profile-state.dirty { color: var(--warn); }
+
+/* 2. 대화 */
+.chat-wrap { position: relative; min-height: 0; background: var(--chat-bg); }
+.chat {
+  height: 100%;
+  overflow-y: auto;
+  padding: 20px max(20px, calc((100% - 1100px) / 2));
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.chat-empty { margin: auto; color: var(--muted); text-align: center; font-size: 17px; line-height: 1.7; }
+
+.msg { display: flex; flex-direction: column; gap: 4px; max-width: min(78%, 820px); }
+.msg .meta { font-size: 13px; color: var(--muted); padding: 0 6px; }
+.msg .bubble {
+  padding: 12px 16px;
+  border-radius: 16px;
+  font-size: 22px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  box-shadow: 0 1px 1px rgb(0 0 0 / 6%);
+}
+.msg.call { align-self: flex-start; }
+.msg.call .bubble { background: var(--surface); border-top-left-radius: 4px; }
+.msg.ai { align-self: flex-end; align-items: flex-end; }
+.msg.ai .bubble { background: var(--accent-soft); border-top-right-radius: 4px; }
+.msg.ai .bubble.streaming::after { content: "▍"; color: var(--accent); animation: pulse 1s infinite; }
+.msg.ai .bubble.failed { color: var(--danger); font-size: 17px; }
+.msg.summary { align-self: center; max-width: min(92%, 900px); width: 100%; }
+.msg.summary .meta { text-align: center; }
+.msg.summary .bubble {
+  background: var(--surface);
+  border: 2px solid var(--accent);
+  font-size: 18px;
+}
+.bubble .partial { color: var(--muted); }
+.bubble .unconfirmed { color: var(--muted); font-style: italic; }
+.bubble .none { color: var(--muted); font-size: 17px; }
+
+.note {
+  align-self: center;
+  max-width: 90%;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgb(0 0 0 / 12%);
+  color: var(--text);
+  font-size: 13px;
+  text-align: center;
+}
+
+.jump {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  background: var(--surface);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 18%);
+  border-radius: 999px;
+}
+
+/* 3. 오디오 컨트롤 */
+.controls {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: 1fr auto;
+  align-items: center;
+  gap: 4px 28px;
+  padding: 10px 20px 6px;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+}
+.status { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 19px; min-width: 170px; }
+.dot { width: 14px; height: 14px; border-radius: 50%; background: var(--muted); flex: none; }
+.dot.recording { background: var(--danger); animation: pulse 1.2s infinite; }
+.dot.busy { background: var(--warn); }
+.dot.ready { background: var(--ok); }
+@keyframes pulse { 50% { opacity: 0.3; } }
+
+.meter { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.meter-track { flex: 1; height: 18px; border-radius: 9px; background: var(--surface-2); overflow: hidden; }
+.meter-fill { height: 100%; width: 0; background: var(--ok); transition: width 80ms linear; }
+.meter-fill.low { background: var(--warn); }
+.meter-fill.clip { background: var(--danger); }
+.meter-db { font-variant-numeric: tabular-nums; font-size: 19px; font-weight: 600; width: 80px; text-align: right; }
+
+.record {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 170px;
+  justify-content: center;
+  padding: 12px 28px;
+  border-radius: 999px;
+  font-size: 21px;
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #fff;
+}
+.record-icon { width: 18px; height: 18px; border-radius: 50%; background: #fff; }
+.record.stop { background: var(--text); border-color: var(--text); color: var(--surface); }
+.record.stop .record-icon { border-radius: 3px; background: var(--surface); }
+
+.notice { grid-column: 1 / -1; margin: 0; font-size: 12px; color: var(--muted); text-align: center; }
+
+.toast {
+  position: fixed;
+  left: 50%;
+  top: 16px;
+  transform: translateX(-50%);
+  max-width: calc(100% - 32px);
+  padding: 11px 18px;
+  border-radius: 10px;
+  background: var(--text);
+  color: var(--surface);
+  font-size: 15px;
+  z-index: 10;
+  cursor: pointer;
+}
+.toast.error { background: var(--danger); color: #fff; }
+
+/* 좁은 화면: 정보 칸을 줄바꿈하고 페이지 스크롤 허용 */
+@media (max-width: 1000px) {
+  .profile-form { flex-direction: column; align-items: stretch; }
+  .profile-fields { grid-template-columns: repeat(3, 1fr); }
+  .f-traits { grid-column: span 3; }
+  .f-concern { grid-column: span 3; }
+  .profile-actions { justify-content: flex-end; }
+}
+
+@media (max-width: 640px) {
+  .profile { padding: 10px 16px; }
+  .profile-fields { grid-template-columns: 1fr 1fr; }
+  .f-gender { grid-column: span 2; }
+  .f-traits, .f-concern { grid-column: span 2; }
+  .profile-state { min-width: 0; margin-right: auto; text-align: left; }
+  .chat { padding: 14px 16px; }
+  .msg { max-width: 88%; }
+  .msg .bubble { font-size: 19px; }
+  .controls { grid-template-columns: 1fr auto; grid-template-rows: auto; padding: 12px 16px 8px; gap: 10px 14px; }
+  .status { min-width: 0; }
+  .meter { grid-column: 1 / -1; grid-row: 2; }
+  .notice { grid-row: 3; }
+  .record { grid-column: 2; grid-row: 1; min-width: 0; padding: 12px 22px; font-size: 19px; }
+}

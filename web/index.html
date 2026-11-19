@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>상담 보조</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <!-- 1. 상담자 정보 (15%) -->
+    <header class="profile">
+      <form id="profile-form" class="profile-form" autocomplete="off">
+        <div class="profile-fields">
+          <label class="field f-name"><span>호칭</span>
+            <input name="name" maxlength="50" placeholder="예: 김○○ 님"></label>
+          <label class="field f-age"><span>나이</span>
+            <input name="age" maxlength="20" placeholder="예: 30대 초반"></label>
+          <label class="field f-gender"><span>성별</span>
+            <select name="gender">
+              <option value="">선택</option>
+              <option>여성</option>
+              <option>남성</option>
+              <option>기타</option>
+            </select></label>
+          <label class="field f-traits"><span>특징</span>
+            <input name="traits" maxlength="2000" placeholder="예: 재상담 고객, 말이 빠름"></label>
+          <label class="field f-concern"><span>고민 내역</span>
+            <input name="concern" maxlength="2000" placeholder="예: 이직을 할지 고민, 직장 상사와 갈등"></label>
+        </div>
+        <div class="profile-actions">
+          <span id="profile-state" class="profile-state"></span>
+          <button type="submit" id="btn-apply" class="primary">적용</button>
+          <button type="button" id="btn-new">신규상담</button>
+          <button type="button" id="btn-save">저장</button>
+        </div>
+      </form>
+    </header>
+
+    <!-- 2. 대화 (65%) -->
+    <main class="chat-wrap">
+      <div id="chat" class="chat"></div>
+      <button id="btn-jump" class="jump" type="button" hidden>새 내용 ↓</button>
+    </main>
+
+    <!-- 3. 오디오 컨트롤 (20%) -->
+    <footer class="controls">
+      <div class="status">
+        <span id="status-dot" class="dot"></span>
+        <span id="status-text">대기</span>
+      </div>
+      <div class="meter" title="입력 레벨 — 폰 위치와 볼륨을 맞추세요">
+        <div class="meter-track"><div id="meter-fill" class="meter-fill"></div></div>
+        <span id="meter-db" class="meter-db">-∞ dB</span>
+      </div>
+      <button id="btn-record" class="record" type="button">
+        <span class="record-icon"></span><span id="record-label">녹음</span>
+      </button>
+      <p class="notice">통화 시작 시 고객에게 녹음과 AI 처리(외부 전송)를 고지하고 동의를 받으세요.</p>
+    </footer>
+  </div>
+
+  <div id="toast" class="toast" role="status" hidden></div>
+
+  <script src="app.js" type="module"></script>
+</body>
+</html>

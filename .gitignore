@@ -1,0 +1,128 @@
+# ============================================================
+# 비밀 — 절대 커밋 금지
+# ============================================================
+.env
+.env.*
+!.env.example
+.key.dat
+*.key
+*.pem
+secrets/
+
+# ============================================================
+# 가상환경 (OS별로 각자 `uv sync`로 만든다)
+# ============================================================
+.venv/
+.venv-*/
+venv/
+env/
+
+# ============================================================
+# 민감 데이터 — 고객 음성·전사문·상담 기록 (CLAUDE.md 10장)
+# ============================================================
+data/
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+*.wav
+*.mp3
+*.m4a
+*.webm
+# 테스트용 연기 녹음만 예외
+!tests/fixtures/*.wav
+
+# ============================================================
+# 파이썬 중간 파일·산출물
+# ============================================================
+# 바이트코드
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C 확장 빌드 결과
+*.so
+*.pyd
+*.dll
+
+# 패키징·배포
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+pip-wheel-metadata/
+__pypackages__/
+
+# PyInstaller
+*.manifest
+*.spec
+
+# pip
+pip-log.txt
+pip-delete-this-directory.txt
+
+# 테스트·커버리지
+.pytest_cache/
+.tox/
+.nox/
+.hypothesis/
+.cache/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+*.py,cover
+nosetests.xml
+htmlcov/
+
+# 타입 검사·린트 캐시
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+.ruff_cache/
+
+# Jupyter / IPython
+.ipynb_checkpoints/
+profile_default/
+ipython_config.py
+
+# ============================================================
+# 로그
+# ============================================================
+*.log
+logs/
+
+# ============================================================
+# OS / 편집기
+# ============================================================
+.DS_Store
+._*
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
+*~
+
+# ============================================================
+# Claude Code 개인 설정 (공유 설정 .claude/settings.json은 커밋 가능)
+# ============================================================
+.claude/settings.local.json
